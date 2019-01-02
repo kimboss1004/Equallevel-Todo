@@ -1,0 +1,14 @@
+<%
+	columns = [{ label: "Name", sort: "name" }]
+%>
+<%= table_for(columns, @task_lists) do |t| %>
+	<%= t.header do %>
+		<%= t.toolbar do %>
+			<%= t.search_form(form_options: {method: 'get'}) %>
+		<% end %>
+		<%= t.column_headings %>
+	<% end %>
+	<%= t.body do |task_list| %>
+		<td><%= link_to task_list.name, admin_task_list_path(task_list.id) %></td>
+	<% end %>
+<% end %>

@@ -1,0 +1,21 @@
+<% if @task_list.errors.full_messages != [] %>
+	<h4><%= @task_list.errors.full_messages %></h4>
+	<br>
+<% end %>
+
+<%= semantic_form_for [:admin, @task_list] do |f| %>
+	<%= f.input :name, :as => :string, :label => "Task List Name" %>
+	<%= f.input :categories, :as => :check_boxes, :collection => @categories %>
+	<%= f.inputs :name => "Tasks" do %>
+		<%= f.semantic_fields_for :tasks do |task| %>
+			<%= task.inputs do %>
+				<%= task.input :name, :as => :string %>
+				<%= task.input :description, :as => :string %>
+				<hr>
+			<% end %>
+		<% end %>
+	<% end %>
+
+	<%= f.actions %>
+<% end %>
+<br>

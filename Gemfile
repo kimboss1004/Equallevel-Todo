@@ -14,7 +14,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootstrap', '~> 4.2.1'
 gem 'jquery-rails'
 gem 'pry-rails'
-
+gem 'grapple', '>= 0.1.5'
+gem 'formtastic', '~> 3.0'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do

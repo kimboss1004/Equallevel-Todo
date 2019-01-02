@@ -12,10 +12,9 @@
   <body class="body-style">
     <nav class="taskr-nav">
       <div class="navbar-header">
-        <a class="navbar-brand white-font" href="#">
-          <img src="management.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          Taskr
-        </a>
+        <%= link_to root_path, class: "navbar-brand white-font" do %>
+          <img src="management.png" width="30" height="30" class="d-inline-block align-top" alt=""> Taskr
+        <% end %>
       </div>
     </nav>
     <%= yield %>
