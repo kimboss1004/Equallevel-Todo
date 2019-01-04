@@ -1,0 +1,79 @@
+
+<div class="my-tasks-container">
+	<%= @list.name %>
+	<!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary new-list-button" data-toggle="modal" data-target="#exampleModal">
+	  Add Task
+	</button>
+	<!-- Modal -->
+	 <%= form_for [@list, @task] do |f| %>
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body">
+			    <div class="form-group">
+			      <%= f.label :name %>
+			      <%= f.text_field :name, class: "form-control", placeholder: "Enter name" %>
+			    </div>
+			    <div class="form-group">
+			      <%= f.label :description %>
+			      <%= f.text_field :description, class: "form-control", placeholder: "Enter description" %>
+			    </div>
+		      </div>
+		      <div class="modal-footer">
+				<%= f.submit "submit", class: 'btn btn-primary' %>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	<% end %>
+</div>
+
+
+<ul class="list-group">
+	<% @list.tasks.each do |t| %>
+		<li class="list-group-item task-list-item", id= <%= t.id %>>
+			<div class="checkbox-name" id=<%= t.id %>>
+				<%= form_tag task_list_task_status_path(@list.id, t.id), :remote => true do %>
+					<%= label_tag t.name %>
+					<%= check_box_tag 'status', t.id, (t.status=="completed"), class: "task-form", id: t.id %>
+				<% end %>
+				<div class="dropdown pull-drowpdown-right">
+				  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				    Options
+				  </button>
+
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				    <li><%= link_to task_list_task_path(@list.id, t.id), method: :delete, remote: true, id: t.id do %>Delete<% end %> </li>
+				    <li><a href="#" class="edit" id=<%= t.id %>>Edit</a></li>
+				    <li><a href="#">Move</a></li>
+				  </ul>
+				</div>
+			</div>
+		</li>
+		<%= javascript_tag do %>
+			$(document).ready(function() {
+				$(document).on('click','a.edit#<%= t.id %>',function() {
+				     var list_item = $(this).parent().parent().parent().parent().parent();
+				     $(this).parent().parent().parent().parent().remove();
+				     $(list_item).append('<%= form_for [@list, t] do |f| %><%= f.label :name %><%= f.text_field :name, class: "form-control", placeholder: "Enter name" %><%= f.submit "submit", class: 'btn btn-primary' %><% end %>'); 
+				});
+			});
+		<% end %>
+	<% end %>
+</ul>
+
+
+
+<%= javascript_tag do %>
+	// Wait until the document finished loading before listening to the checkboxes
+	$(document).ready(function() {
+		// Get all the checkboxes on the page
+		var checkboxes = $('input:checkbox');
+		// Listen for changes to the checkboxes
+		checkboxes.on('change', function() {
+			$(this).parent().submit();
+		});
+	})
+<% end %>

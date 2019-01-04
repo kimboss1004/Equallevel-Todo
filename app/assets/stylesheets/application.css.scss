@@ -16,6 +16,12 @@
 
 @import "bootstrap";
 
+.pull-drowpdown-right {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
 .taskr-nav {
 	background-color: #82cef2;
     width: 100%;
@@ -44,6 +50,8 @@ div.navbar-header {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
+	background-color: white;
+	padding: 10px;
 }
 
 .my-tasks-container {
@@ -65,4 +73,12 @@ div.navbar-header {
 	right: 10px;
 	top: 6px;
 }
+
+ .flash {
+  position: fixed;
+  top: 10px;
+  width: 94%;
+  margin-left: 50px;
+  z-index: 50;
+ }
 

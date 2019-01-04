@@ -1,1 +1,15 @@
-show
+
+<div class="my-tasks-container">
+	<%= @list.name %>
+	<button class="btn btn-primary new-list-button">Add Task +</button>
+</div>
+<ul class="list-group">
+	<% @list.tasks.each do |t| %>
+		<li class="list-group-item"><%= t.name %></li>
+	<% end %>
+	<li class="list-group-item">Cras justo odio</li>
+	<li class="list-group-item">Dapibus ac facilisis in</li>
+	<li class="list-group-item">Morbi leo risus</li>
+	<li class="list-group-item">Porta ac consectetur ac</li>
+	<li class="list-group-item">Vestibulum at eros</li>
+</ul>

@@ -17,6 +17,12 @@
         <% end %>
       </div>
     </nav>
-    <%= yield %>
+
+    <%= render 'layouts/messages' %>
+    
+    <div class="center-container">
+      <%= yield %>
+    </div>
+    
   </body>
 </html>

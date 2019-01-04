@@ -2,7 +2,7 @@ class Admin::TaskListsController < ApplicationController
 
 	def index
 		query = "#{(params[:query] || "").downcase}%"
-		if Task.all == []
+		if TaskList.all == []
 			a = TaskList.new(name: "list 1 Cooking Recipes")
 			b = TaskList.new(name: "list 2 Art of Shaving")
 			c = TaskList.new(name: "list 3 Skiing Essentials")
@@ -30,7 +30,8 @@ class Admin::TaskListsController < ApplicationController
 	end
 
 	def show
-		
+		@list = TaskList.find(params[:id])
+		@tasks = @list.tasks
 	end
 
 	def new

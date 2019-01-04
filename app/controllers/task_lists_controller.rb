@@ -5,12 +5,10 @@ class TaskListsController < ApplicationController
 		@tasklist = TaskList.new
 	end
 
-	def create
-		binding.pry
-		@list = TaskList.new()
+	def show
+		@list = TaskList.find(params[:id])
+		@task = Task.new
 	end
-
-
 
 
 end
