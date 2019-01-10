@@ -1,70 +1,102 @@
 
-<div class="my-tasks-container">
-	<%= @list.name %>
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary new-list-button" data-toggle="modal" data-target="#exampleModal">
-	  Add Task
-	</button>
-	<!-- Modal -->
-	 <%= form_for [@list, @task] do |f| %>
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-body">
-			    <div class="form-group">
-			      <%= f.label :name %>
-			      <%= f.text_field :name, class: "form-control", placeholder: "Enter name" %>
-			    </div>
-			    <div class="form-group">
-			      <%= f.label :description %>
-			      <%= f.text_field :description, class: "form-control", placeholder: "Enter description" %>
-			    </div>
-		      </div>
-		      <div class="modal-footer">
-				<%= f.submit "submit", class: 'btn btn-primary' %>
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+
+<div class="categories-container">
+	<i class="fas fa-tag"></i> tags: 
+	<% @list.categories.each do |category| %>
+		<span class="badge badge-secondary"><%= category.name %></span> 
 	<% end %>
 </div>
+<div class="my-tasks-container">
+	<i class="far fa-list-alt"></i> <%= @list.name %>
+	<button class="btn btn-primary btn-sm new-task-button" data-toggle="modal" data-target="#myModal">
+	    <i class="far fa-plus-square"></i> Add Task 
+	</button>
+</div>
 
+<%= form_for [@list, @task] do |f| %>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-body">
+	                <div class="form-signin">
+	                    <h2 class="form-signin-heading">Create a new Task</h2>
+					    <div class="form-group">
+					      <%= f.label :name %>
+					      <%= f.text_field :name, class: "form-control", placeholder: "Enter name" %>
+					    </div>
+					    <div class="form-group">
+					      <%= f.label :description %>
+					      <%= f.text_field :description, class: "form-control", placeholder: "Enter description" %>
+					    </div>
+
+	                </div>
+	            </div>
+	            <div class="modal-footer">
+	            	<%= f.submit "submit", class: 'btn btn-primary' %>
+	                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<% end %>
 
 <ul class="list-group">
 	<% @list.tasks.each do |t| %>
 		<li class="list-group-item task-list-item", id= <%= t.id %>>
 			<div class="checkbox-name" id=<%= t.id %>>
-				<%= form_tag task_list_task_status_path(@list.id, t.id), :remote => true do %>
-					<%= label_tag t.name %>
-					<%= check_box_tag 'status', t.id, (t.status=="completed"), class: "task-form", id: t.id %>
+				<%= form_tag task_list_task_status_path(@list.id, t.id), class: "checkbox-form", method: :post, :remote => true do %>
+					<div class="checkbox">
+						<label>
+							<%= check_box_tag 'status', t.id, (t.status == "completed"), class: "task-form", id: t.id %> <%= label_tag t.name %>
+						</label>
+					</div>
 				<% end %>
-				<div class="dropdown pull-drowpdown-right">
-				  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				    Options
-				  </button>
 
-				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				    <li><%= link_to task_list_task_path(@list.id, t.id), method: :delete, remote: true, id: t.id do %>Delete<% end %> </li>
-				    <li><a href="#" class="edit" id=<%= t.id %>>Edit</a></li>
-				    <li><a href="#">Move</a></li>
-				  </ul>
+				<div class="dropdown pull-drowpdown-right">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<i class="fas fa-tasks"></i>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<li>
+							<%= link_to task_list_task_path(@list.id, t.id), method: :delete, remote: true, id: t.id, class: "dropdown-item edit" do %>
+							<i class="far fa-trash-alt"></i> Delete
+							<% end %> 
+						</li>
+						<div class="dropdown-divider"></div>
+						<li><a href="#" class="edit dropdown-item" id=<%= t.id %>> <i class="far fa-edit"></i> Edit </a></li>
+
+						<% unless t.position == 1 %> 
+							<div class="dropdown-divider"></div>
+							<li>
+						        <%= link_to task_list_task_move_up_path(@list.id, t.id), method: :post, class: "dropdown-item" do %>
+						        	<i class="fas fa-arrow-circle-up"></i></i> Move Up
+						        <% end %> 
+						    </li>
+						<% end %> 
+
+						<% unless t.position == @list.tasks.last.position %> 
+							<div class="dropdown-divider"></div>
+							<li>
+						        <%= link_to task_list_task_move_down_path(@list.id, t.id), method: :post, class: "dropdown-item" do %>
+						        	<i class="fas fa-arrow-circle-down"></i> Move Down
+						        <% end %> 
+							</li>
+						<% end %> 
+					</ul>
 				</div>
 			</div>
 		</li>
 		<%= javascript_tag do %>
 			$(document).ready(function() {
 				$(document).on('click','a.edit#<%= t.id %>',function() {
-				     var list_item = $(this).parent().parent().parent().parent().parent();
-				     $(this).parent().parent().parent().parent().remove();
-				     $(list_item).append('<%= form_for [@list, t] do |f| %><%= f.label :name %><%= f.text_field :name, class: "form-control", placeholder: "Enter name" %><%= f.submit "submit", class: 'btn btn-primary' %><% end %>'); 
+				     var list_item = $(this).closest("li.task-list-item");
+				     $(this).closest("div.checkbox-name").remove();
+				     $(list_item).append('<%= form_for [@list, t] do |f| %><%= f.label :name, id: t.id %><%= f.text_field :name, class: "form-control", placeholder: "Enter name" %><br><%= f.submit "submit", class: 'btn btn-primary', id: t.id %><% end %>'); 
 				});
 			});
 		<% end %>
 	<% end %>
 </ul>
-
-
 
 <%= javascript_tag do %>
 	// Wait until the document finished loading before listening to the checkboxes
@@ -73,7 +105,7 @@
 		var checkboxes = $('input:checkbox');
 		// Listen for changes to the checkboxes
 		checkboxes.on('change', function() {
-			$(this).parent().submit();
+			$(this).closest("form.checkbox-form").submit();
 		});
 	})
 <% end %>

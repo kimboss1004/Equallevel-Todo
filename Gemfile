@@ -17,6 +17,7 @@ gem 'pry-rails'
 gem 'grapple', '>= 0.1.5'
 gem 'formtastic', '~> 3.0'
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'acts_as_list'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

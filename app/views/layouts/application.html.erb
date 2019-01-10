@@ -1,28 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>App</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <head>
+        <title>Taskr</title>
+        <%= favicon_link_tag '/management.png' %>
+        <%= csrf_meta_tags %>
+        <%= csp_meta_tag %>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <%= stylesheet_link_tag "application", :media => "all" %>
+        <%= javascript_include_tag "application" %>
+    </head>
 
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= javascript_include_tag "application" %>
-  </head>
+    <body class="body-style">
+        <nav class="taskr-nav">
+            <div class="navbar-header">
+                <% if logged_in? && current_user.admin %>
+                    <%= link_to admin_task_lists_path, class: "navbar-brand header-font" do %>
+                        <img src="/management.png" width="30" height="30" class="d-inline-block align-top" alt=""> Taskr
+                    <% end %>
+                <% else %>
+                    <%= link_to root_path, class: "navbar-brand header-font" do %>
+                        <img src="/management.png" width="30" height="30" class="d-inline-block align-top" alt=""> Taskr
+                    <% end %>
+                <% end %>
+            </div>
+            <div class="nav-create">
+                <%= link_to new_task_list_path, class: "nav-create-link btn btn-primary" do %>
+                    <i class="far fa-list-alt"></i> New List
+                <% end %>
+            </div>
+            <div class="login-logout">
+                <% if logged_in? %>
+                    <%= link_to logout_path, class: "nav-create-link btn btn-primary" do %>
+                    <i class="far fa-user-circle"></i> Logout
+                    <% end %>
+                <% else %>
+                    <%= link_to login_path, class: "nav-create-link btn btn-primary" do %>
+                    <i class="far fa-user-circle"></i> Login
+                    <% end %>
+                <% end %>
 
-  <body class="body-style">
-    <nav class="taskr-nav">
-      <div class="navbar-header">
-        <%= link_to root_path, class: "navbar-brand white-font" do %>
-          <img src="management.png" width="30" height="30" class="d-inline-block align-top" alt=""> Taskr
-        <% end %>
-      </div>
-    </nav>
+            </div>
+        </nav>
 
-    <%= render 'layouts/messages' %>
-    
-    <div class="center-container">
-      <%= yield %>
-    </div>
-    
-  </body>
+        <%= render 'layouts/messages' %>
+
+        <div class="center-container">
+            <%= yield %>
+        </div>
+
+    </body>
 </html>

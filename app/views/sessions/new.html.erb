@@ -1,0 +1,15 @@
+<%= form_tag sessions_path, method: :post, class: "register" do |f| %>
+    <h4 class="text-center">Login</h3><br>
+    <div class="form-group">
+        <%= label_tag :login, nil,  for: "loginInput" %>
+        <%= text_field_tag :login, nil, class: "form-control", placeholder: "Enter login username", id: "loginInput" %>
+    </div>
+    <div class="form-group">
+        <%= label_tag :password, nil, for: "exampleInputPassword1" %>
+        <%= password_field_tag :password, nil, class: "form-control", placeholder: "Password", id: "exampleInputPassword1" %>
+    </div>
+
+    <%= submit_tag "Login", class: "btn btn-primary" %>
+    <%= link_to "Register", new_user_path, class: "btn btn-primary" %>
+
+<% end %>
